@@ -1,8 +1,8 @@
 <template>
 <div>
-	<div class="btn_area">
-        <button class="btn" @click="showModal">登録</button>
-    </div>
+	<div class="register_btn_area">
+		<DefultButton class="register_btn_show" btnText="登録" @btnClick="showModal" />
+	</div>
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
 			<div>
@@ -14,8 +14,8 @@
 					</select>
 				</label>
 			</div>
-			<div>
-				<button @click="closeModal">閉じる</button>
+			<div class="register_btn_area">
+				<DefultButton class="register_btn_close" btnText="閉じる" @btnClick="closeModal" />
 			</div>
 		</div>
 	</div>
@@ -67,26 +67,21 @@ export default {
   padding: 1em;
   background:#fff;
 }
-/** ボタンに関するデザイン */
-.btn_area {
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px 10px 0 0;
-}
 
-.btn {
-	display: block;
-	position: relative;
+/** ボタンエリアに関するデザイン */
+.register_btn_area {
+	display: flex;
+	justify-content: flex-end;
+	margin: 10px 10px 0 0;
+}
+/** ボタンに関するデザイン */
+.register_btn_show {
 	width: 100px;
 	padding: 0.8em;
-	text-align: center;
-	text-decoration: none;
-	color: #fff;
-	background: #7c9ad1;-radius: 4px;
 }
-.btn:hover {
-	 cursor: pointer;
-	 text-decoration: none;
-	background:#6989c4;
+
+.register_btn_close {
+	width: 50px;
+	padding: 0.2em;
 }
 </style>
