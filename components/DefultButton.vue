@@ -1,15 +1,10 @@
 <template>
-    <button class="btn" @click="btnClick">{{ btnText }}</button>
+    <button class="btn" @click="$emit('btn-click')">{{ btnText }}</button>
 </template>
 
 <script>
 export default {
     props:["btnText"],
-    methods: {
-        btnClick() {
-            this.$emit('btnClick')
-        }
-    }
 }
 </script>
 
