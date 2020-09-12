@@ -1,29 +1,29 @@
 <template>
 <div>
 	<div class="register_btn_area">
-		<DefultButton class="register_btn_show" btnText="登録" @btn-click="showModal" />
+		<PartsDefultButton class="register_btn_show" btnText="登録" @btn-click="showModal" />
 	</div>
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
 			<div>
-				<InputText :inputTextInfo="inputTextInfo.item1" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item1" />
 				<label for="pesonality">性格
 				</label>
 				<select id="pesonality">
 					<option hidden>選択してください</option>
 					<option value="" v-for="item in personalInfo" :key="item.id">{{ item.PESONRALITY }}</option>
 				</select>
-				<InputText :inputTextInfo="inputTextInfo.item2" />
-				<InputText :inputTextInfo="inputTextInfo.item3" />
-				<InputText :inputTextInfo="inputTextInfo.item4" />
-				<InputText :inputTextInfo="inputTextInfo.item5" />
-				<InputText :inputTextInfo="inputTextInfo.item6" />
-				<InputText :inputTextInfo="inputTextInfo.item7" />
-				<InputText :inputTextInfo="inputTextInfo.item8" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item3" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item4" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item5" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item6" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item7" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item8" />
 			</div>
 			<div class="register_btn_area">
-				<DefultButton class="register_btn_close" btnText="登録" />
-				<DefultButton class="register_btn_close" btnText="閉じる" @btn-click="closeModal" />
+				<PartsDefultButton class="register_btn_close" btnText="登録" />
+				<PartsDefultButton class="register_btn_close" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
 	</div>

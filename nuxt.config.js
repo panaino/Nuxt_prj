@@ -42,7 +42,15 @@ export default {
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
   */
-  components: true,
+  components: {
+    dirs: [
+      '~/components',
+      {
+        path: '~/components/parts/',
+        prefix: 'Parts'
+      }
+    ]
+  },
   /*
   ** Nuxt.js dev-modules
   */
