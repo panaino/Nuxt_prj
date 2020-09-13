@@ -11,7 +11,7 @@
 				</label>
 				<select id="pesonality">
 					<option hidden>選択してください</option>
-					<option value="" v-for="item in personalInfo" :key="item.id">{{ item.PESONRALITY }}</option>
+					<option value="" v-for="item in personalInfo" :key="item.PESONRALITY">{{ item.PESONRALITY }}</option>
 				</select>
 				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
 				<PartsInputText :inputTextInfo="inputTextInfo.item3" />
