@@ -32,7 +32,14 @@
 
 <script>
 export default {
-	props:['personalInfo'],
+	created () {
+    	this.$store.dispatch('personalInfo/fetchData')
+	},
+	computed: {
+		personalInfo() {
+			return this.$store.getters['personalInfo/getData']
+		}
+	},
     data() {
 		return {
 			visible: false,

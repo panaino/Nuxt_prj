@@ -1,21 +1,12 @@
 <template>
   <div class="container">
-    <RegisterModal :personalInfo="info" />
+    <RegisterModal />
     <Table />
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-      return {
-        info: '',
-      }
-    },
-    async asyncData({ app }) {
-      const res = await app.$axios.$get('http://localhost:3000/api/pesonality');
-      return { info: res };
-  }
 }
 </script>
 
