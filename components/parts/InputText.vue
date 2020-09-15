@@ -1,7 +1,7 @@
 <template>
     <div>
         <label :for="inputTextInfo.tagId">{{ inputTextInfo.text }}</label>
-        <input :id="inputTextInfo.tagId" type="text">
+        <input :id="inputTextInfo.tagId" type="text" :list="inputTextInfo.list">
     </div>
 </template>
 

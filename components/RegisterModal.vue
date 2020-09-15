@@ -7,6 +7,9 @@
 		<div class="register_modal_content">
 			<div>
 				<PartsInputText :inputTextInfo="inputTextInfo.item1" />
+				<datalist :id="inputTextInfo.item1.list">
+					<option v-for="(value, key) in monsterInfo" :key="key">{{ key }}</option>
+				</datalist>
 				<label for="pesonality">性格
 				</label>
 				<select id="pesonality">
@@ -33,18 +36,22 @@
 <script>
 export default {
 	created () {
-    	this.$store.dispatch('personalInfo/fetchData')
+		this.$store.dispatch('personalInfo/fetchData')
+    	this.$store.dispatch('monsterInfo/fetchData')
 	},
 	computed: {
 		personalInfo() {
 			return this.$store.getters['personalInfo/getData']
+		},
+		monsterInfo() {
+			return this.$store.getters['monsterInfo/getData']
 		}
 	},
     data() {
 		return {
 			visible: false,
 			inputTextInfo: {
-				item1:{"tagId":"name", "text":"名前"},
+				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
 				item2:{"tagId":"ability", "text":"特性"},
 				item3:{"tagId":"statusH", "text":"HP"},
 				item4:{"tagId":"statusA", "text":"攻撃"},
