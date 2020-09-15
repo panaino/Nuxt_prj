@@ -21,6 +21,13 @@ export const actions = {
 
 export const mutations = {
     setData(state, res) {
-        state.personalInfo = res.data
+        let json = {}
+        res.data.forEach(data => {
+            json[data.PESONRALITY] = {
+                "UP": data.UP,
+                "DOWN": data.DOWN
+            }
+        });
+        state.personalInfo = json
     },
 }
