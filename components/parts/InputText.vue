@@ -1,12 +1,17 @@
 <template>
     <div>
         <label :for="inputTextInfo.tagId">{{ inputTextInfo.text }}</label>
-        <input :id="inputTextInfo.tagId" type="text" :list="inputTextInfo.list">
+        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="text" @change="$emit('change-text', text)">
     </div>
 </template>
 
 <script>
 export default {
-    props:['inputTextInfo']
+    props:['inputTextInfo'],
+    data() {
+        return {
+            text:""
+        }
+    }
 }
 </script>

@@ -6,23 +6,23 @@
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
 			<div>
-				<PartsInputText :inputTextInfo="inputTextInfo.item1" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item1" @change-text="inputName" />
 				<datalist :id="inputTextInfo.item1.list">
 					<option v-for="(value, key) in monsterInfo" :key="key">{{ key }}</option>
 				</datalist>
 				<label for="pesonality">性格
 				</label>
-				<select id="pesonality">
+				<select id="pesonality" v-model="insertData.pesonality">
 					<option hidden>選択してください</option>
-					<option value="" v-for="(value, key) in personalInfo" :key="key">{{ key }}</option>
+					<option v-for="(value, key) in personalInfo" :key="key" :value="key">{{ key }}</option>
 				</select>
-				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item3" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item4" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item5" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item6" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item7" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item8" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item2" @change-text="inputAbility" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item3" @change-text="inputH" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item4" @change-text="inputA" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item5" @change-text="inputB" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item6" @change-text="inputC" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item7" @change-text="inputD" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item8" @change-text="inputS" />
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" />
@@ -45,11 +45,22 @@ export default {
 		},
 		monsterInfo() {
 			return this.$store.getters['monsterInfo/getData']
-		}
+		},
 	},
     data() {
 		return {
 			visible: false,
+			insertData:{
+				name:"",
+				pesonality:"",
+				ability:"",
+				H:"",
+				A:"",
+				B:"",
+				C:"",
+				D:"",
+				S:"",
+			},
 			inputTextInfo: {
 				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
 				item2:{"tagId":"ability", "text":"特性"},
@@ -68,6 +79,33 @@ export default {
 		},
 		closeModal() {
 			this.visible = false
+		},
+		inputName(text) {
+			return this.insertData.name = text
+		},
+		inputPesonality(text) {
+			this.insertData.pesonality = text
+		},
+		inputAbility(text) {
+			return this.insertData.ability = text
+		},
+		inputH(text) {
+			return this.insertData.H = text
+		},
+		inputA(text) {
+			return this.insertData.A = text
+		},
+		inputB(text) {
+			return this.insertData.B = text
+		},
+		inputC(text) {
+			return this.insertData.C = text
+		},
+		inputD(text) {
+			return this.insertData.D = text
+		},
+		inputS(text) {
+			return this.insertData.S = text
 		}
 	}
 }
