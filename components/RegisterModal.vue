@@ -101,6 +101,7 @@ label {
   width:50%;
   padding: 1em;
   background:#fff;
+  border-radius: 5px;
 }
 
 /** ボタンエリアに関するデザイン */
