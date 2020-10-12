@@ -12,7 +12,7 @@ export const getters = {
 
 export const actions = {
     fetchData({ commit }) {
-        axios.get('http://localhost:3000/api/monster')
+        axios.get('http://localhost:3000/api/parameter')
             .then((res) => {
                 commit('setData', res)
             })
