@@ -7,7 +7,7 @@
 		<div class="register_modal_content">
 			<div>
 				<!-- 名前入力欄 -->
-				<PartsInputText :inputTextInfo="inputTextInfo.item1" @inputText="inputName" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item1" @inputText="inputText" />
 				<datalist :id="inputTextInfo.item1.list">
 					<option v-for="(value, key) in monsterInfo" :key="key">{{ key }}</option>
 				</datalist>
@@ -19,9 +19,9 @@
 					<option v-for="(value, key) in personalInfo" :key="key" :value="key">{{ key }}</option>
 				</select>
 				<!-- 特性入力欄 -->
-				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item2" @inputText="inputText" />
 				<!-- パラーメタ入力欄 -->
-				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" />
+				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" @inputText="inputText" />
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" />
@@ -79,8 +79,8 @@ export default {
 			this.visible = false
 		},
 		// 入力項目
-		inputName(val) {
-			this.insertData.name = val
+		inputText(val) {
+			this.insertData[val.tagId] = val.text
 		}
 	}
 }
@@ -92,10 +92,10 @@ label {
 }
 /** モーダルに関するデザイン */
 .register_modal_full{
-  /*　要素を重ねた時の順番　*/
+  /* 要素を重ねた時の順番 */
   z-index:1;
 
-  /*　画面全体を覆う設定　*/
+  /* 画面全体を覆う設定 */
   position:fixed;
   top:0;
   left:0;
@@ -103,7 +103,7 @@ label {
   height:100%;
   background-color:rgba(0,0,0,0.5);
 
-  /*　画面の中央に要素を表示させる設定　*/
+  /* 画面の中央に要素を表示させる設定 */
   display: flex;
   align-items: center;
   justify-content: center;

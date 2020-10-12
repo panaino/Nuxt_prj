@@ -11,7 +11,8 @@ export default {
     data() {
         return {
             inputData: {
-                text:""
+                tagId: this.inputTextInfo.tagId,
+                text: this.inputTextInfo.defultValue || ""
             }
         }
     },
@@ -22,7 +23,7 @@ export default {
             },
             set(val) {
                 this.inputData.text = val
-                this.$emit('inputText', val)
+                this.$emit('inputText', this.inputData)
             }
         }
     }
