@@ -1,7 +1,7 @@
 <template>
     <div>
         <label :for="inputTextInfo.tagId">{{ inputTextInfo.text }}</label>
-        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="text" @change="$emit('change-text', text)">
+        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="changeTextBox">
     </div>
 </template>
 
@@ -10,7 +10,20 @@ export default {
     props:['inputTextInfo'],
     data() {
         return {
-            text:""
+            inputData: {
+                text:""
+            }
+        }
+    },
+    computed: {
+        changeTextBox: {
+            get() {
+                return this.inputData.text
+            },
+            set(val) {
+                this.inputData.text = val
+                this.$emit('inputText', val)
+            }
         }
     }
 }

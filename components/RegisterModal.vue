@@ -6,17 +6,21 @@
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
 			<div>
-				<PartsInputText :inputTextInfo="inputTextInfo.item1" @change-text="inputName" />
+				<!-- 名前入力欄 -->
+				<PartsInputText :inputTextInfo="inputTextInfo.item1" @inputText="inputName" />
 				<datalist :id="inputTextInfo.item1.list">
 					<option v-for="(value, key) in monsterInfo" :key="key">{{ key }}</option>
 				</datalist>
+				<!-- 性格入力欄 -->
 				<label for="pesonality">性格
 				</label>
 				<select id="pesonality" v-model="insertData.pesonality">
 					<option value="" selected>選択してください</option>
 					<option v-for="(value, key) in personalInfo" :key="key" :value="key">{{ key }}</option>
 				</select>
+				<!-- 特性入力欄 -->
 				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
+				<!-- パラーメタ入力欄 -->
 				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" />
 			</div>
 			<div class="register_btn_area">
@@ -67,38 +71,16 @@ export default {
 		}
 	},
 	methods: {
+		// モーダル処理
 		showModal() {
 			this.visible = true
 		},
 		closeModal() {
 			this.visible = false
 		},
-		inputName(text) {
-			return this.insertData.name = text
-		},
-		inputPesonality(text) {
-			this.insertData.pesonality = text
-		},
-		inputAbility(text) {
-			return this.insertData.ability = text
-		},
-		inputH(text) {
-			return this.insertData.H = text
-		},
-		inputA(text) {
-			return this.insertData.A = text
-		},
-		inputB(text) {
-			return this.insertData.B = text
-		},
-		inputC(text) {
-			return this.insertData.C = text
-		},
-		inputD(text) {
-			return this.insertData.D = text
-		},
-		inputS(text) {
-			return this.insertData.S = text
+		// 入力項目
+		inputName(val) {
+			this.insertData.name = val
 		}
 	}
 }
