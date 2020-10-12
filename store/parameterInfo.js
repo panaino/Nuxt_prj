@@ -21,6 +21,13 @@ export const actions = {
 
 export const mutations = {
     setData(state, res) {
-        return state.parameterInfo = res.data
+        let json = {}
+        res.data.forEach(data => {
+            json[data.DISP_NO] = {
+                "tagId": data.STATUS,
+                "text": data.STATUS_NAME
+            } 
+        })
+        return state.parameterInfo = json
     }
 }

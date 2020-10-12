@@ -13,16 +13,11 @@
 				<label for="pesonality">性格
 				</label>
 				<select id="pesonality" v-model="insertData.pesonality">
-					<option hidden>選択してください</option>
+					<option value="" selected>選択してください</option>
 					<option v-for="(value, key) in personalInfo" :key="key" :value="key">{{ key }}</option>
 				</select>
-				<PartsInputText :inputTextInfo="inputTextInfo.item2" @change-text="inputAbility" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item3" @change-text="inputH" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item4" @change-text="inputA" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item5" @change-text="inputB" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item6" @change-text="inputC" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item7" @change-text="inputD" />
-				<PartsInputText :inputTextInfo="inputTextInfo.item8" @change-text="inputS" />
+				<PartsInputText :inputTextInfo="inputTextInfo.item2" />
+				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" />
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" />
@@ -37,7 +32,8 @@
 export default {
 	created () {
 		this.$store.dispatch('personalInfo/fetchData')
-    	this.$store.dispatch('monsterInfo/fetchData')
+		this.$store.dispatch('monsterInfo/fetchData')
+		this.$store.dispatch('parameterInfo/fetchData')
 	},
 	computed: {
 		personalInfo() {
@@ -46,6 +42,9 @@ export default {
 		monsterInfo() {
 			return this.$store.getters['monsterInfo/getData']
 		},
+		parameterInfo() {
+			return this.$store.getters['parameterInfo/getData']
+		}
 	},
     data() {
 		return {
@@ -63,13 +62,7 @@ export default {
 			},
 			inputTextInfo: {
 				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
-				item2:{"tagId":"ability", "text":"特性"},
-				item3:{"tagId":"statusH", "text":"HP"},
-				item4:{"tagId":"statusA", "text":"攻撃"},
-				item5:{"tagId":"statusB", "text":"防御"},
-				item6:{"tagId":"statusC", "text":"特攻"},
-				item7:{"tagId":"statusD", "text":"特防"},
-				item8:{"tagId":"statusS", "text":"素早さ"}
+				item2:{"tagId":"ability", "text":"特性"}
 			}
 		}
 	},
