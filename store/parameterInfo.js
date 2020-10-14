@@ -26,6 +26,7 @@ export const mutations = {
             json[data.DISP_NO] = {
                 "tagId": data.STATUS,
                 "text": data.STATUS_NAME,
+                "dataType": "status",
                 "defultValue": "0"
             } 
         })
