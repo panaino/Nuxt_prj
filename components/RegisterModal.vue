@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 	created () {
 		this.$store.dispatch('personalInfo/fetchData')
@@ -90,7 +91,10 @@ export default {
 		},
 		// 登録処理
 		register() {
-			console.log("登録")
+			axios.post('http://localhost:3000/api/insert')
+				.then((res) => {
+					console.log(res.data)
+				})
 		}
 	}
 }

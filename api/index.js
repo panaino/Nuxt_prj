@@ -12,7 +12,7 @@ const con = mysql.createConnection({
     database: 'Node_Poke_Project'
 });
 
-
+// 性格一覧取得
 app.get("/pesonality", function (req, res) {
     let sql = 'SELECT * FROM TB_PESONRALITY'
     con.query(sql
@@ -21,7 +21,7 @@ app.get("/pesonality", function (req, res) {
             res.send(results);
         });
 });
-
+// パラメータ一覧取得
 app.get("/parameter", function (req, res) {
     let sql = 'SELECT * FROM TB_PARAMETER_INFO ORDER BY DISP_NO asc'
     con.query(sql
@@ -30,7 +30,7 @@ app.get("/parameter", function (req, res) {
             res.send(results);
         });
 });
-
+// 全ポケモンのデータ一覧を取得
 app.get("/monster", function (req, res) {
     let sql = 'SELECT * FROM TB_MONSTER_INFO'
     con.query(sql
@@ -38,6 +38,10 @@ app.get("/monster", function (req, res) {
             if (err) throw err;
             res.send(results);
         });
+});
+// モンスターを登録
+app.post("/insert", function (req, res) {
+    res.send("test ok");
 });
 
 
