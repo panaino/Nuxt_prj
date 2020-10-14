@@ -90,11 +90,12 @@ export default {
 			}
 		},
 		// 登録処理
-		register() {
-			axios.post('http://localhost:3000/api/insert')
+		async register() {
+			await axios.post('http://localhost:3000/api/insert', this.insertData)
 				.then((res) => {
 					console.log(res.data)
 				})
+			alert("登録完了")
 		}
 	}
 }

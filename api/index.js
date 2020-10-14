@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+
 const mysql = require('mysql');
 // DB接続情報
 const con = mysql.createConnection({
@@ -41,7 +44,8 @@ app.get("/monster", function (req, res) {
 });
 // モンスターを登録
 app.post("/insert", function (req, res) {
-    res.send("test ok");
+    let msg = req.body
+    res.send(msg);
 });
 
 
