@@ -10,8 +10,9 @@ export default {
     props:['inputTextInfo'],
     data() {
         return {
-            inputData: {
+            childInputData: {
                 tagId: this.inputTextInfo.tagId,
+                dataType: this.inputTextInfo.dataType || "",
                 text: this.inputTextInfo.defultValue || ""
             }
         }
@@ -19,11 +20,11 @@ export default {
     computed: {
         changeTextBox: {
             get() {
-                return this.inputData.text
+                return this.childInputData.text
             },
             set(val) {
-                this.inputData.text = val
-                this.$emit('inputText', this.inputData)
+                this.childInputData.text = val
+                this.$emit('inputText', this.childInputData)
             }
         }
     }

@@ -24,7 +24,7 @@
 				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" @inputText="inputText" />
 			</div>
 			<div class="register_btn_area">
-				<PartsDefultButton class="register_btn_close" btnText="登録" />
+				<PartsDefultButton class="register_btn_close" btnText="登録" @btn-click="register" />
 				<PartsDefultButton class="register_btn_close" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
@@ -57,12 +57,14 @@ export default {
 				name:"",
 				pesonality:"",
 				ability:"",
-				H:"",
-				A:"",
-				B:"",
-				C:"",
-				D:"",
-				S:"",
+				status:{
+					H:"0",
+					A:"0",
+					B:"0",
+					C:"0",
+					D:"0",
+					S:"0",
+				}
 			},
 			inputTextInfo: {
 				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
@@ -80,7 +82,15 @@ export default {
 		},
 		// 入力項目
 		inputText(val) {
-			this.insertData[val.tagId] = val.text
+			if(val.dataType == "status"){
+				this.insertData["status"][val.tagId] = val.text
+			} else {
+				this.insertData[val.tagId] = val.text
+			}
+		},
+		// 登録処理
+		register() {
+			console.log("登録")
 		}
 	}
 }
