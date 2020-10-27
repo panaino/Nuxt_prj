@@ -16,8 +16,8 @@ const con = mysql.createConnection({
 });
 
 // 性格一覧取得
-app.get("/pesonality", function (req, res) {
-    let sql = 'SELECT * FROM TB_PESONRALITY'
+app.get("/personality", function (req, res) {
+    let sql = 'SELECT * FROM TB_PERSONALITY'
     con.query(sql
         , function (err, results, fields) {
             if (err) throw err;
@@ -26,7 +26,10 @@ app.get("/pesonality", function (req, res) {
 });
 // パラメータ一覧取得
 app.get("/parameter", function (req, res) {
-    let sql = 'SELECT * FROM TB_PARAMETER_INFO ORDER BY DISP_NO asc'
+    let sql = 
+      'SELECT *'
+    + ' FROM TB_PARAMETER_INFO'
+    + ' ORDER BY DISP_NO asc'
     con.query(sql
         , function (err, results, fields) {
             if (err) throw err;
@@ -44,9 +47,33 @@ app.get("/monster", function (req, res) {
 });
 // モンスターを登録
 app.post("/insert", function (req, res) {
-    let msg = req.body
-    res.send(msg);
-});
+    let data = req.body
+    let sql =
+      " INSERT INTO TB_BRED_MONSTER "
+    + " VALUES( "
+    + "null"
+    + "   , '" + data.name
+    + "' , '" + data.personality
+    + "' , '" + data.ability
+    + "' , " + data.status.H
+    + "," + data.status.A
+    + "," + data.status.B
+    + "," + data.status.C
+    + "," + data.status.D
+    + "," + data.status.S
+    + "," + data.status.H
+    + "," + data.status.A
+    + "," + data.status.B
+    + "," + data.status.C
+    + "," + data.status.D
+    + "," + data.status.S
+    + " ); "
+    con.query(sql
+        , function (err, results, fields) {
+            if (err) throw err;
+        })
+    res.send('ok');
+    });
 
 
 module.exports = {

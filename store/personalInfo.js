@@ -12,7 +12,7 @@ export const getters = {
 
 export const actions = {
     fetchData({ commit }) {
-        axios.get('http://localhost:3000/api/pesonality')
+        axios.get('http://localhost:3000/api/personality')
             .then((res) => {
                 commit('setData', res)
             })
@@ -23,7 +23,7 @@ export const mutations = {
     setData(state, res) {
         let json = {}
         res.data.forEach(data => {
-            json[data.PESONRALITY] = {
+            json[data.PERSONALITY] = {
                 "UP": data.UP,
                 "DOWN": data.DOWN
             }

@@ -9,19 +9,19 @@
 				<!-- 名前入力欄 -->
 				<PartsInputText :inputTextInfo="inputTextInfo.item1" @inputText="inputText" />
 				<datalist :id="inputTextInfo.item1.list">
-					<option v-for="(value, key) in monsterInfo" :key="key">{{ key }}</option>
+					<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
 				</datalist>
 				<!-- 性格入力欄 -->
-				<label for="pesonality">性格
+				<label for="personality">性格
 				</label>
-				<select id="pesonality" v-model="insertData.pesonality">
+				<select id="personality" v-model="insertData.personality">
 					<option value="" selected>選択してください</option>
-					<option v-for="(value, key) in personalInfo" :key="key" :value="key">{{ key }}</option>
+					<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 				</select>
 				<!-- 特性入力欄 -->
 				<PartsInputText :inputTextInfo="inputTextInfo.item2" @inputText="inputText" />
 				<!-- パラーメタ入力欄 -->
-				<PartsInputText v-for="(value, key) in parameterInfo" :key="key" :inputTextInfo="value" @inputText="inputText" />
+				<PartsInputText v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key" :inputTextInfo="value" @inputText="inputText" />
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" @btn-click="register" />
@@ -40,23 +40,12 @@ export default {
 		this.$store.dispatch('monsterInfo/fetchData')
 		this.$store.dispatch('parameterInfo/fetchData')
 	},
-	computed: {
-		personalInfo() {
-			return this.$store.getters['personalInfo/getData']
-		},
-		monsterInfo() {
-			return this.$store.getters['monsterInfo/getData']
-		},
-		parameterInfo() {
-			return this.$store.getters['parameterInfo/getData']
-		}
-	},
     data() {
 		return {
 			visible: false,
 			insertData:{
 				name:"",
-				pesonality:"",
+				personality:"",
 				ability:"",
 				status:{
 					H:"0",
@@ -65,7 +54,8 @@ export default {
 					C:"0",
 					D:"0",
 					S:"0",
-				}
+				},
+				actualValue:{}
 			},
 			inputTextInfo: {
 				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
@@ -83,9 +73,14 @@ export default {
 		},
 		// 入力項目
 		inputText(val) {
+			// パラメータ入力
 			if(val.dataType == "status"){
 				this.insertData["status"][val.tagId] = val.text
 			} else {
+				if(val.tagId == 'name') {
+					// 選択したポケモンの種族値をセットする
+					this.insertData.actualValue = this.$store.getters['monsterInfo/getData'][val.text]
+				}
 				this.insertData[val.tagId] = val.text
 			}
 		},
