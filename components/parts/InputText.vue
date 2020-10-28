@@ -12,7 +12,9 @@ export default {
         return {
             childInputData: {
                 tagId: this.inputTextInfo.tagId,
+                statusKey: this.inputTextInfo.statusKey || "",
                 dataType: this.inputTextInfo.dataType || "",
+                valueType: this.inputTextInfo.valueType || "",
                 text: this.inputTextInfo.defultValue || ""
             }
         }

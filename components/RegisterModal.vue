@@ -7,8 +7,10 @@
 		<div class="register_modal_content">
 			<div>
 				<!-- 名前入力欄 -->
-				<PartsInputText :inputTextInfo="inputTextInfo.item1" @inputText="inputText" />
-				<datalist :id="inputTextInfo.item1.list">
+				<PartsInputText 
+				:inputTextInfo='{tagId:"name", text:"名前", list:"nameList"}'
+				@inputText="inputText" />
+				<datalist id="nameList">
 					<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
 				</datalist>
 				<!-- 性格入力欄 -->
@@ -19,9 +21,26 @@
 					<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 				</select>
 				<!-- 特性入力欄 -->
-				<PartsInputText :inputTextInfo="inputTextInfo.item2" @inputText="inputText" />
-				<!-- パラーメタ入力欄 -->
-				<PartsInputText v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key" :inputTextInfo="value" @inputText="inputText" />
+				<PartsInputText 
+				:inputTextInfo='{tagId:"ability", text:"特性"}'
+				@inputText="inputText" />
+				<div class="register_param_area">
+					<div class="register_param_item" v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
+						<!-- パラーメタ入力欄 -->
+						<PartsInputText :inputTextInfo="value" @inputText="inputText" />
+						<!-- 個体値入力欄 -->
+						<PartsInputText 
+						:inputTextInfo='{
+							tagId:"zeroToV_" + value.tagId,
+							statusKey:value.statusKey,
+							text: "個体値",
+							dataType: "status",
+							valueType: "zeroToV",
+							defultValue: "0"
+						}'
+						@inputText="inputText" />
+					</div>
+				</div>
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" @btn-click="register" />
@@ -48,18 +67,32 @@ export default {
 				personality:"",
 				ability:"",
 				status:{
-					H:"0",
-					A:"0",
-					B:"0",
-					C:"0",
-					D:"0",
-					S:"0",
+					H: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
+					A: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
+					B: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
+					C: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
+					D: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
+					S: {
+						effortValue:"0",
+						zeroToV:"0"
+						},
 				},
 				actualValue:{}
-			},
-			inputTextInfo: {
-				item1:{"tagId":"name", "text":"名前", "list":"nameList"},
-				item2:{"tagId":"ability", "text":"特性"}
 			}
 		}
 	},
@@ -75,7 +108,7 @@ export default {
 		inputText(val) {
 			// パラメータ入力
 			if(val.dataType == "status"){
-				this.insertData["status"][val.tagId] = val.text
+				this.insertData["status"][val.statusKey][val.valueType] = val.text
 			} else {
 				if(val.tagId == 'name') {
 					// 選択したポケモンの種族値をセットする
@@ -127,6 +160,10 @@ label {
   border-radius: 5px;
 }
 
+.register_param_item {
+	display: flex;
+}
+
 /** ボタンエリアに関するデザイン */
 .register_btn_area {
 	display: flex;
@@ -142,5 +179,9 @@ label {
 .register_btn_close {
 	width: 50px;
 	padding: 0.2em;
+}
+
+label {
+	height: 24px;
 }
 </style>
