@@ -8,7 +8,7 @@
 			<div>
 				<!-- 名前入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"name", text:"名前", list:"nameList"}'
+				:inputTextInfo='{tagId:"name", text:"名前",dataType:"name", list:"nameList"}'
 				@inputText="inputText" />
 				<datalist id="nameList">
 					<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
@@ -16,7 +16,7 @@
 				<!-- 性格入力欄 -->
 				<label for="personality">性格
 				</label>
-				<select id="personality" v-model="insertData.personality">
+				<select id="personality" v-model="changePersonality">
 					<option value="" selected>選択してください</option>
 					<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 				</select>
@@ -24,9 +24,10 @@
 				<PartsInputText 
 				:inputTextInfo='{tagId:"ability", text:"特性"}'
 				@inputText="inputText" />
+				<!-- 努力値・個体値入力欄 -->
 				<div class="register_param_area">
 					<div class="register_param_item" v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
-						<!-- パラーメタ入力欄 -->
+						<!-- 努力値入力欄 -->
 						<PartsInputText :inputTextInfo="value" @inputText="inputText" />
 						<!-- 個体値入力欄 -->
 						<PartsInputText 
@@ -64,7 +65,11 @@ export default {
 			visible: false,
 			insertData:{
 				name:"",
-				personality:"",
+				personality:{
+					name:"",
+					UP:"",
+					DOWN:"",
+				},
 				ability:"",
 				status:{
 					H: {
@@ -110,12 +115,15 @@ export default {
 			if(val.dataType == "status"){
 				this.insertData["status"][val.statusKey][val.valueType] = val.text
 			} else {
-				if(val.tagId == 'name') {
+				if(val.dataType == 'name') {
 					// 選択したポケモンの種族値をセットする
 					this.insertData.actualValue = this.$store.getters['monsterInfo/getData'][val.text]
 				}
 				this.insertData[val.tagId] = val.text
 			}
+		},
+		setPersonality(event) {
+			this.insertData.personality = event.target.value
 		},
 		// 登録処理
 		async register() {
@@ -125,7 +133,21 @@ export default {
 				})
 			alert("登録完了")
 		}
-	}
+	},
+	computed: {
+		// 性格入力情報を監視する
+        changePersonality: {
+            get() {
+                return this.insertData.personality.name
+            },
+            set(val) {
+				this.insertData.personality.name = val
+                this.insertData.personality.UP = this.$store.getters['personalInfo/getData'][val]["UP"]
+                this.insertData.personality.DOWN = this.$store.getters['personalInfo/getData'][val]["DOWN"]
+				
+            }
+        }
+    }
 }
 </script>
 
