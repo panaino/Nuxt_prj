@@ -24,7 +24,7 @@
 				</select>
 				<!-- 特性入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"ability", labelName:"特性"}'
+				:inputTextInfo='{tagId:"ability", labelName:"特性", dataType:"ability"}'
 				:valueText="insertData.ability"
 				@inputText="inputText" 
 				/>
@@ -146,7 +146,7 @@ export default {
 						statusObj[key]["zeroToV"] = "0"
 					})
 				}
-				this.insertData[val.tagId] = val.text
+				this.insertData[dataType] = val.text
 			} 
 		},
 		setPersonality(event) {
