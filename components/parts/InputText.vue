@@ -15,10 +15,10 @@ export default {
     data() {
         return {
             childInputData: {
-                statusKey: this.inputTextInfo.statusKey || "",
+                text:"",
                 dataType: this.inputTextInfo.dataType || "",
-                valueType: this.inputTextInfo.valueType || "",
-                text:""
+                statusKey: this.inputTextInfo.statusKey || "",
+                valueType: this.inputTextInfo.valueType || ""
             }
         }
     },

@@ -18,7 +18,7 @@
 				<!-- 性格入力欄 -->
 				<label for="personality">性格
 				</label>
-				<select id="personality" v-model="changePersonality">
+				<select id="personality" v-model="changePersonality" :disabled="isDisabled">
 					<option value="" selected>選択してください</option>
 					<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 				</select>
@@ -136,17 +136,23 @@ export default {
 			let dataType = val.dataType
 			if(dataType == "status"){
 				statusObj[key][val.valueType] = val.text
-				this.calcVlue(key)
+				this.calcValue(key)
 			} else {
-				// 名前に変更があった場合、特性、努力値、種族値を初期化する
+				this.insertData[dataType] = val.text
+				// 名前に変更があった場合、入力値を初期化する
 				if(dataType == "name") {
+					this.insertData.personality.name = ""
+					this.insertData.personality.UP = ""
+					this.insertData.personality.DOWN = ""
 					this.insertData.ability = ""
+					let calcValue = this.calcValue
 					Object.keys(statusObj).forEach(function(key) {
 						statusObj[key]["effortValue"] = "0"
 						statusObj[key]["zeroToV"] = "0"
+						statusObj[key]["calcValue"] = "0"
+						calcValue(key)
 					})
 				}
-				this.insertData[dataType] = val.text
 			} 
 		},
 		setPersonality(event) {
@@ -161,28 +167,47 @@ export default {
 			alert("登録完了")
 		},
 		// 実数値を計算 key:ステータスキー
-		calcVlue(key) {
+		calcValue(key) {
 			let statusObj = this.insertData["status"][key]
-			let result = 10
-			if(key == "H") {
-
-			} else {
-
+			let result = 0
+			let effortValue = Number(statusObj.effortValue)
+			let zeroToV = Number(statusObj.zeroToV)
+			let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
+			let tribeValue = monster ? Number(monster[key]) : 0
+			let up = this.insertData.personality.UP == key ? 1.1 : 1.0
+			let down = this.insertData.personality.DOWN == key ? 0.9 : 1.0
+			// 存在しないモンスターの入力があった場合は計算処理を行わない
+			if(!monster) {
+				return
 			}
-			statusObj.calcValue = result
+			if(key == "H") {
+				// (種族値×2+個体値+努力値÷4)×レベル÷100+レベル+10
+				result = Math.floor((tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 + 50 + 10)
+			} else {
+				// {(種族値×2+個体値+努力値÷4)×レベル÷100+5}×せいかく補正
+				result = Math.floor(((tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 +5) * up * down)
+			}
+			statusObj.calcValue = String(result)
+		},
+		hello() {
+			console.log("hello")
 		}
 	},
 	computed: {
 		// 性格入力情報を監視する
         changePersonality: {
-            get() {
+            get: function() {
                 return this.insertData.personality.name
             },
-            set(val) {
+            set: function(val) {
 				this.insertData.personality.name = val
                 this.insertData.personality.UP = this.$store.getters['personalInfo/getData'][val]["UP"]
-                this.insertData.personality.DOWN = this.$store.getters['personalInfo/getData'][val]["DOWN"]
-				
+				this.insertData.personality.DOWN = this.$store.getters['personalInfo/getData'][val]["DOWN"]
+				// 性格が変更されるたびにステータスを計算し直す
+				let calcValue = this.calcValue
+				Object.keys(this.insertData.status).forEach(function(key) {
+					calcValue(key)
+				})
             }
 		},
 		isDisabled: function() {
