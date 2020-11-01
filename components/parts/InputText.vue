@@ -1,13 +1,16 @@
 <template>
     <div>
         <label :for="inputTextInfo.tagId">{{ inputTextInfo.text }}</label>
-        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="changeTextBox">
+        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="changeTextBox" :disabled='isDisabled' >
     </div>
 </template>
 
 <script>
 export default {
-    props:['inputTextInfo'],
+    props:{
+        inputTextInfo:Object,
+        isDisabled:Boolean
+        },
     data() {
         return {
             childInputData: {

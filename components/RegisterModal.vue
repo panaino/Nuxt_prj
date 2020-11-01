@@ -9,7 +9,8 @@
 				<!-- 名前入力欄 -->
 				<PartsInputText 
 				:inputTextInfo='{tagId:"name", text:"名前",dataType:"name", list:"nameList"}'
-				@inputText="inputText" />
+				@inputText="inputText" 
+				/>
 				<datalist id="nameList">
 					<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
 				</datalist>
@@ -23,14 +24,15 @@
 				<!-- 特性入力欄 -->
 				<PartsInputText 
 				:inputTextInfo='{tagId:"ability", text:"特性"}'
-				@inputText="inputText" />
+				@inputText="inputText" 
+				/>
 				<!-- 努力値・個体値入力欄 -->
 				<div class="register_param_area">
 					<div class="register_param_item" v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
 						<!-- 努力値入力欄 -->
-						<PartsInputText :inputTextInfo="value" @inputText="inputText" />
+						<PartsInputText :inputTextInfo="value" :isDisabled="isDisabled" @inputText="inputText" />
 						<!-- 個体値入力欄 -->
-						<PartsInputText 
+						<PartsInputText
 						:inputTextInfo='{
 							tagId:"zeroToV_" + value.tagId,
 							statusKey:value.statusKey,
@@ -39,7 +41,13 @@
 							valueType: "zeroToV",
 							defultValue: "0"
 						}'
-						@inputText="inputText" />
+						:isDisabled="isDisabled"
+						@inputText="inputText" 
+						/>
+						<div>
+							<p>実数値</p>
+							<p>{{ calcValue(value.statusKey) }}</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -74,30 +82,35 @@ export default {
 				status:{
 					H: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"10"
 						},
 					A: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"0"
 						},
 					B: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"5"
 						},
 					C: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"0"
 						},
 					D: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"0"
 						},
 					S: {
 						effortValue:"0",
-						zeroToV:"0"
+						zeroToV:"0",
+						calcValue:"0"
 						},
 				},
-				actualValue:{}
 			}
 		}
 	},
@@ -109,7 +122,7 @@ export default {
 		closeModal() {
 			this.visible = false
 		},
-		// 入力項目
+		// 子コンポーネントからの入力情報をセットする
 		inputText(val) {
 			// パラメータ入力
 			if(val.dataType == "status"){
@@ -117,7 +130,7 @@ export default {
 			} else {
 				if(val.dataType == 'name') {
 					// 選択したポケモンの種族値をセットする
-					this.insertData.actualValue = this.$store.getters['monsterInfo/getData'][val.text]
+					this.insertData.monsterInfo = this.$store.getters['monsterInfo/getData'][val.text]
 				}
 				this.insertData[val.tagId] = val.text
 			}
@@ -146,7 +159,20 @@ export default {
                 this.insertData.personality.DOWN = this.$store.getters['personalInfo/getData'][val]["DOWN"]
 				
             }
-        }
+		},
+		calcValue: function() {
+			return function(key) {
+				return this.insertData.status[key].calcValue
+			}
+		},
+		isDisabled: function() {
+			let name = this.insertData.name
+			if(name == "") {
+				return true
+			} else {
+				return !(name in this.$store.getters['monsterInfo/getData'])
+			}
+		}
     }
 }
 </script>
