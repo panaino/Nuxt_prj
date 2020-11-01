@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label :for="inputTextInfo.tagId">{{ inputTextInfo.text }}</label>
+        <label :for="inputTextInfo.tagId">{{ inputTextInfo.labelName }}</label>
         <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="changeTextBox" :disabled='isDisabled' >
     </div>
 </template>
@@ -9,7 +9,8 @@
 export default {
     props:{
         inputTextInfo:Object,
-        isDisabled:Boolean
+        isDisabled:Boolean,
+        valueText:String
         },
     data() {
         return {
@@ -18,14 +19,14 @@ export default {
                 statusKey: this.inputTextInfo.statusKey || "",
                 dataType: this.inputTextInfo.dataType || "",
                 valueType: this.inputTextInfo.valueType || "",
-                text: this.inputTextInfo.defultValue || ""
+                text:""
             }
         }
     },
     computed: {
         changeTextBox: {
             get() {
-                return this.childInputData.text
+                return this.valueText || ""
             },
             set(val) {
                 this.childInputData.text = val

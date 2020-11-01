@@ -8,7 +8,8 @@
 			<div>
 				<!-- 名前入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"name", text:"名前",dataType:"name", list:"nameList"}'
+				:inputTextInfo='{tagId:"name", labelName:"名前", dataType:"name", list:"nameList"}'
+				:valueText="insertData.name"
 				@inputText="inputText" 
 				/>
 				<datalist id="nameList">
@@ -23,30 +24,35 @@
 				</select>
 				<!-- 特性入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"ability", text:"特性"}'
+				:inputTextInfo='{tagId:"ability", labelName:"特性"}'
+				:valueText="insertData.ability"
 				@inputText="inputText" 
 				/>
 				<!-- 努力値・個体値入力欄 -->
 				<div class="register_param_area">
 					<div class="register_param_item" v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
 						<!-- 努力値入力欄 -->
-						<PartsInputText :inputTextInfo="value" :isDisabled="isDisabled" @inputText="inputText" />
+						<PartsInputText 
+						:inputTextInfo="value" 
+						:valueText="insertData.status[value.statusKey].effortValue"
+						:isDisabled="isDisabled" 
+						@inputText="inputText" />
 						<!-- 個体値入力欄 -->
 						<PartsInputText
 						:inputTextInfo='{
 							tagId:"zeroToV_" + value.tagId,
 							statusKey:value.statusKey,
-							text: "個体値",
+							labelName: "個体値",
 							dataType: "status",
 							valueType: "zeroToV",
-							defultValue: "0"
 						}'
+						:valueText="insertData.status[value.statusKey].zeroToV"
 						:isDisabled="isDisabled"
 						@inputText="inputText" 
 						/>
 						<div>
 							<p>実数値</p>
-							<p>{{ calcValue(value.statusKey) }}</p>
+							<p style="padding-top: 1px;">{{ insertData.status[value.statusKey].calcValue }}</p>
 						</div>
 					</div>
 				</div>
@@ -83,7 +89,7 @@ export default {
 					H: {
 						effortValue:"0",
 						zeroToV:"0",
-						calcValue:"10"
+						calcValue:"0"
 						},
 					A: {
 						effortValue:"0",
@@ -93,7 +99,7 @@ export default {
 					B: {
 						effortValue:"0",
 						zeroToV:"0",
-						calcValue:"5"
+						calcValue:"0"
 						},
 					C: {
 						effortValue:"0",
@@ -125,15 +131,23 @@ export default {
 		// 子コンポーネントからの入力情報をセットする
 		inputText(val) {
 			// パラメータ入力
-			if(val.dataType == "status"){
-				this.insertData["status"][val.statusKey][val.valueType] = val.text
+			let statusObj = this.insertData.status
+			let key = val.statusKey
+			let dataType = val.dataType
+			if(dataType == "status"){
+				statusObj[key][val.valueType] = val.text
+				this.calcVlue(key)
 			} else {
-				if(val.dataType == 'name') {
-					// 選択したポケモンの種族値をセットする
-					this.insertData.monsterInfo = this.$store.getters['monsterInfo/getData'][val.text]
+				// 名前に変更があった場合、特性、努力値、種族値を初期化する
+				if(dataType == "name") {
+					this.insertData.ability = ""
+					Object.keys(statusObj).forEach(function(key) {
+						statusObj[key]["effortValue"] = "0"
+						statusObj[key]["zeroToV"] = "0"
+					})
 				}
 				this.insertData[val.tagId] = val.text
-			}
+			} 
 		},
 		setPersonality(event) {
 			this.insertData.personality = event.target.value
@@ -145,6 +159,17 @@ export default {
 					console.log(res.data)
 				})
 			alert("登録完了")
+		},
+		// 実数値を計算 key:ステータスキー
+		calcVlue(key) {
+			let statusObj = this.insertData["status"][key]
+			let result = 10
+			if(key == "H") {
+
+			} else {
+
+			}
+			statusObj.calcValue = result
 		}
 	},
 	computed: {
@@ -159,11 +184,6 @@ export default {
                 this.insertData.personality.DOWN = this.$store.getters['personalInfo/getData'][val]["DOWN"]
 				
             }
-		},
-		calcValue: function() {
-			return function(key) {
-				return this.insertData.status[key].calcValue
-			}
 		},
 		isDisabled: function() {
 			let name = this.insertData.name
