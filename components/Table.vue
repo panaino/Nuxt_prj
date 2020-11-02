@@ -18,6 +18,20 @@
         </tr>
       </thead>
       <!-- テーブルボディ -->
+      <tbody>
+        <tr v-for="(value, index) in this.$store.getters['bredMonster/getData']" :key="value.ID">
+          <td>{{ index }}</td>
+          <td>{{ value.NAME }}</td>
+          <td>{{ value.PERSONALITY }}</td>
+          <td>{{ value.ABILITY }}</td>
+          <td>{{ value.calc_H }}<p class="effort_value" v-if="value.H > 0">(252)</p></td>
+          <td>{{ value.calc_A }}<p class="effort_value" v-if="value.A > 0">(252)</p></td>
+          <td>{{ value.calc_B }}<p class="effort_value" v-if="value.B > 0">(252)</p></td>
+          <td>{{ value.calc_C }}<p class="effort_value" v-if="value.C > 0">(252)</p></td>
+          <td>{{ value.calc_D }}<p class="effort_value" v-if="value.D > 0">(252)</p></td>
+          <td>{{ value.calc_S }}<p class="effort_value" v-if="value.S > 0">(252)</p></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -42,5 +56,9 @@
 .register_list th {
   padding: 0 8px;
   line-height: 40px;
+}
+
+.effort_value {
+  font-size: xx-small;
 }
 </style>

@@ -15,6 +15,15 @@ const con = mysql.createConnection({
     database: 'Node_Poke_Project'
 });
 
+// 育成済みポケモン全件取得
+app.get("/selectBredMonster", function (req, res) {
+    let sql = 'SELECT * FROM TB_BRED_MONSTER'
+    con.query(sql,
+        function (err, results, fields) {
+            if (err) throw err;
+            res.send(results);
+        })
+});
 // 性格一覧取得
 app.get("/personality", function (req, res) {
     let sql = 'SELECT * FROM TB_PERSONALITY'
@@ -47,26 +56,39 @@ app.get("/monster", function (req, res) {
 });
 // モンスターを登録
 app.post("/insert", function (req, res) {
+    // ステータス実数値
+    calcStatus = {
+        H:"",
+        A:"",
+        B:"",
+        C:"",
+        D:"",
+        S:""
+    }
     let data = req.body
+    let status = data.status
+    let keys = Object.keys(data.status)
     let sql =
       " INSERT INTO TB_BRED_MONSTER "
     + " VALUES( "
     + "null"
     + "   , '" + data.name
-    + "' , '" + data.personality
+    + "' , '" + data.personality.name
     + "' , '" + data.ability
-    + "' , " + data.status.H
-    + "," + data.status.A
-    + "," + data.status.B
-    + "," + data.status.C
-    + "," + data.status.D
-    + "," + data.status.S
-    + "," + data.status.H
-    + "," + data.status.A
-    + "," + data.status.B
-    + "," + data.status.C
-    + "," + data.status.D
-    + "," + data.status.S
+    // 努力値
+    + "' , " + status["H"]["effortValue"]
+    + "," + status["A"]["effortValue"]
+    + "," + status["B"]["effortValue"]
+    + "," + status["C"]["effortValue"]
+    + "," + status["D"]["effortValue"]
+    + "," + status["S"]["effortValue"]
+    // 実数値
+    + "," + status["H"]["calcValue"]
+    + "," + status["A"]["calcValue"]
+    + "," + status["B"]["calcValue"]
+    + "," + status["C"]["calcValue"]
+    + "," + status["D"]["calcValue"]
+    + "," + status["S"]["calcValue"]
     + " ); "
     con.query(sql
         , function (err, results, fields) {
@@ -74,6 +96,26 @@ app.post("/insert", function (req, res) {
         })
     res.send('ok');
     });
+
+/**
+ * HPの実数値を計算する。
+ * @param {*} effortValue 努力値 
+ * @param {*} zeroToV 個体値
+ * @param {*} tribeValue 種族値
+ */
+function calcStatusHp(effortValue, zeroToV, tribeValue) {
+    return (tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 + 50 + 10
+}
+
+/**
+ * HP以外のステータス実数値を計算する。
+ * @param {*} effortValue 努力値
+ * @param {*} zeroToV 個体値
+ * @param {*} tribeValue 種族値
+ */
+function calcOtherStatus(effortValue, zeroToV, tribeValue) {
+    return ((tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 + 5)
+}
 
 
 module.exports = {

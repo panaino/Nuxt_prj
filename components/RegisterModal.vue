@@ -197,9 +197,9 @@ export default {
 		async register() {
 			await axios.post('http://localhost:3000/api/insert', this.insertData)
 				.then((res) => {
-					console.log(res.data)
+					alert("登録完了")
+					this.closeModal()
 				})
-			alert("登録完了")
 		},
 		// 実数値を計算 key:ステータスキー
 		calcValue(key) {
