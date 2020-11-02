@@ -197,6 +197,7 @@ export default {
 		async register() {
 			await axios.post('http://localhost:3000/api/insert', this.insertData)
 				.then((res) => {
+					this.$store.dispatch('bredMonster/fetchData')
 					alert("登録完了")
 					this.closeModal()
 				})

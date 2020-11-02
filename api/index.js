@@ -56,18 +56,8 @@ app.get("/monster", function (req, res) {
 });
 // モンスターを登録
 app.post("/insert", function (req, res) {
-    // ステータス実数値
-    calcStatus = {
-        H:"",
-        A:"",
-        B:"",
-        C:"",
-        D:"",
-        S:""
-    }
     let data = req.body
     let status = data.status
-    let keys = Object.keys(data.status)
     let sql =
       " INSERT INTO TB_BRED_MONSTER "
     + " VALUES( "

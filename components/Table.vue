@@ -19,7 +19,7 @@
       </thead>
       <!-- テーブルボディ -->
       <tbody>
-        <tr v-for="(value, index) in this.$store.getters['bredMonster/getData']" :key="value.ID">
+        <tr v-for="(value, index) in getBredMonster" :key="value.ID">
           <td>{{ index }}</td>
           <td>{{ value.NAME }}</td>
           <td>{{ value.PERSONALITY }}</td>
@@ -37,7 +37,13 @@
 </template>
 
 <script>
-
+export default {
+  computed: {
+    getBredMonster: function() {
+      return this.$store.getters['bredMonster/getData']
+    }
+  }
+}
 </script>
 
 <style>
