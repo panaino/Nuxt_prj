@@ -6,28 +6,45 @@
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
 			<div>
-				<!-- 名前入力欄 -->
-				<PartsInputText 
-				:inputTextInfo='{id:"name", labelName:"名前", dataType:"name", list:"nameList"}'
-				:valueText="insertData.name"
-				@inputText="inputText" 
-				/>
-				<datalist id="nameList">
-					<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
-				</datalist>
-				<!-- 性格入力欄 -->
-				<label for="personality">性格
-				</label>
-				<select id="personality" v-model="changePersonality" :disabled="isDisabled">
-					<option value="" selected>選択してください</option>
-					<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
-				</select>
-				<!-- 特性入力欄 -->
-				<PartsInputText 
-				:inputTextInfo='{id:"ability", labelName:"特性", dataType:"ability"}'
-				:valueText="insertData.ability"
-				@inputText="inputText" 
-				/>
+				<table>
+					<tbody>
+						<tr>
+							<td>名前</td>
+							<td>
+								<!-- 名前入力欄 -->
+								<PartsInputText 
+								:inputTextInfo='{id:"name", labelName:"名前", dataType:"name", list:"nameList"}'
+								:valueText="insertData.name"
+								@inputText="inputText" 
+								/>
+								<datalist id="nameList">
+									<option v-for="(value, key) in this.$store.getters['monsterInfo/getData']" :key="key">{{ key }}</option>
+								</datalist>
+							</td>
+						</tr>
+						<tr>
+							<td>性格</td>
+							<td>
+								<!-- 性格入力欄 -->
+								<select id="personality" v-model="changePersonality" :disabled="isDisabled">
+									<option value="" selected>選択してください</option>
+									<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>特性</td>
+							<td>
+								<!-- 特性入力欄 -->
+								<PartsInputText 
+								:inputTextInfo='{id:"ability", labelName:"特性", dataType:"ability"}'
+								:valueText="insertData.ability"
+								@inputText="inputText" 
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 				<table>
 					<thead>
 						<tr>
@@ -262,14 +279,10 @@ export default {
 
 .register_modal_content{
   z-index:2;
-  width:50%;
+  width:30%;
   padding: 1em;
   background:#fff;
   border-radius: 5px;
-}
-
-.register_param_item {
-	display: flex;
 }
 
 /** ボタンエリアに関するデザイン */

@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 育成済み一覧テーブル -->
-    <table id="table">
+    <table class="register_list">
       <!-- テーブルヘッダー -->
-      <thead>
+      <thead class="register_list_thead">
         <tr>
           <th>ID</th>
           <th>名前</th>
@@ -27,22 +27,19 @@
 </script>
 
 <style>
-#table {
+
+.register_list {
   width: 800px;
   margin: 0 auto;
-}
-
-table {
-  width: 100%;
   border-collapse: collapse; 
 }
 
-thead th {
+.register_list_thead th {
   border-bottom: 2px solid #0099e4; /*#d31c4a */
   color: #0099e4;
 }
 
-th {
+.register_list th {
   padding: 0 8px;
   line-height: 40px;
 }
