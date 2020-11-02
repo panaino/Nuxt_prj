@@ -1,8 +1,5 @@
 <template>
-    <div>
-        <label :for="inputTextInfo.tagId">{{ inputTextInfo.labelName }}</label>
-        <input type="text" :id="inputTextInfo.tagId" :list="inputTextInfo.list" v-model="changeTextBox" :disabled='isDisabled' >
-    </div>
+    <input type="text" :id="inputTextInfo.id" :list="inputTextInfo.list" v-model="changeTextBox" :disabled='isDisabled' >
 </template>
 
 <script>

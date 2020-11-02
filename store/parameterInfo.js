@@ -24,7 +24,7 @@ export const mutations = {
         let json = {}
         res.data.forEach(data => {
             json[data.DISP_NO] = {
-                "tagId": data.STATUS,
+                "id": data.STATUS,
                 "labelName": data.STATUS_NAME,
                 "statusKey": data.STATUS,
                 "dataType": "status",

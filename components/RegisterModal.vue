@@ -8,7 +8,7 @@
 			<div>
 				<!-- 名前入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"name", labelName:"名前", dataType:"name", list:"nameList"}'
+				:inputTextInfo='{id:"name", labelName:"名前", dataType:"name", list:"nameList"}'
 				:valueText="insertData.name"
 				@inputText="inputText" 
 				/>
@@ -24,38 +24,53 @@
 				</select>
 				<!-- 特性入力欄 -->
 				<PartsInputText 
-				:inputTextInfo='{tagId:"ability", labelName:"特性", dataType:"ability"}'
+				:inputTextInfo='{id:"ability", labelName:"特性", dataType:"ability"}'
 				:valueText="insertData.ability"
 				@inputText="inputText" 
 				/>
-				<!-- 努力値・個体値入力欄 -->
-				<div class="register_param_area">
-					<div class="register_param_item" v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
-						<!-- 努力値入力欄 -->
-						<PartsInputText 
-						:inputTextInfo="value" 
-						:valueText="insertData.status[value.statusKey].effortValue"
-						:isDisabled="isDisabled" 
-						@inputText="inputText" />
-						<!-- 個体値入力欄 -->
-						<PartsInputText
-						:inputTextInfo='{
-							tagId:"zeroToV_" + value.tagId,
-							statusKey:value.statusKey,
-							labelName: "個体値",
-							dataType: "status",
-							valueType: "zeroToV",
-						}'
-						:valueText="insertData.status[value.statusKey].zeroToV"
-						:isDisabled="isDisabled"
-						@inputText="inputText" 
-						/>
-						<div>
-							<p>実数値</p>
-							<p style="padding-top: 1px;">{{ insertData.status[value.statusKey].calcValue }}</p>
-						</div>
-					</div>
-				</div>
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th>努力値</th>
+							<th>個体値</th>
+							<th>種族値</th>
+							<th>実数値</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
+							<td>{{ value.labelName }}</td>
+							<td>
+								<!-- 努力値入力欄 -->
+								<PartsInputText 
+								:inputTextInfo="value" 
+								:valueText="insertData.status[value.statusKey].effortValue"
+								:isDisabled="isDisabled" 
+								@inputText="inputText" />
+							</td>
+							<td>
+								<!-- 個体値入力欄 -->
+								<PartsInputText
+								:inputTextInfo='{
+									tagIdid:"zeroToV_" + value.id,
+									statusKey:value.statusKey,
+									labelName: "個体値",
+									dataType: "status",
+									valueType: "zeroToV",
+								}'
+								:valueText="insertData.status[value.statusKey].zeroToV"
+								:isDisabled="isDisabled"
+								@inputText="inputText" 
+								/>
+							</td>
+							<td>{{ insertData.status[value.statusKey].tribeValue }}</td>
+							<td>
+								<p style="padding-top: 1px;">{{ insertData.status[value.statusKey].calcValue }}</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="register_btn_area">
 				<PartsDefultButton class="register_btn_close" btnText="登録" @btn-click="register" />
@@ -69,11 +84,6 @@
 <script>
 import axios from 'axios'
 export default {
-	created () {
-		this.$store.dispatch('personalInfo/fetchData')
-		this.$store.dispatch('monsterInfo/fetchData')
-		this.$store.dispatch('parameterInfo/fetchData')
-	},
     data() {
 		return {
 			visible: false,
@@ -87,31 +97,37 @@ export default {
 				ability:"",
 				status:{
 					H: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
 						},
 					A: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
 						},
 					B: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
 						},
 					C: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
 						},
 					D: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
 						},
 					S: {
+						tribeValue:"0",
 						effortValue:"0",
 						zeroToV:"0",
 						calcValue:"0"
@@ -146,10 +162,12 @@ export default {
 					this.insertData.personality.DOWN = ""
 					this.insertData.ability = ""
 					let calcValue = this.calcValue
+					let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
 					Object.keys(statusObj).forEach(function(key) {
 						statusObj[key]["effortValue"] = "0"
 						statusObj[key]["zeroToV"] = "0"
 						statusObj[key]["calcValue"] = "0"
+						statusObj[key]["tribeValue"] = monster ? monster[key] : "0"
 						calcValue(key)
 					})
 				}
@@ -223,9 +241,6 @@ export default {
 </script>
 
 <style>
-label {
-	display: block;
-}
 /** モーダルに関するデザイン */
 .register_modal_full{
   /* 要素を重ねた時の順番 */
@@ -274,7 +289,4 @@ label {
 	padding: 0.2em;
 }
 
-label {
-	height: 24px;
-}
 </style>
