@@ -23,7 +23,7 @@ export default {
     computed: {
         changeTextBox: {
             get() {
-                return this.valueText || ""
+                return this.valueText
             },
             set(val) {
                 this.childInputData.text = val

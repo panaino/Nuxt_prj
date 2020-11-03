@@ -64,35 +64,25 @@
 								<!-- 努力値入力欄 -->
 								<PartsInputText
 								class="input_status"
-								list="effortValue_list"
-								placeholder="0"
 								:inputTextInfo="value" 
-								:valueText="insertData.status[value.statusKey].effortValue"
 								:isDisabled="isDisabled" 
+								:valueText='insertData.status[value.statusKey]["effortValue"]'
 								@inputText="inputText" />
-								<datalist id="effortValue_list">
-									<option v-for="n of 64" :key="n">{{ n * 4 -4 }}</option>
-								</datalist>
 							</td>
 							<td>
 								<!-- 個体値入力欄 -->
 								<PartsInputText
 								class="input_status"
-								list="zeroToV_list"
-								placeholder="0"
 								:inputTextInfo='{
 									tagIdid:"zeroToV_" + value.id,
 									statusKey:value.statusKey,
 									dataType: "status",
 									valueType: "zeroToV",
 								}'
-								:valueText="insertData.status[value.statusKey].zeroToV"
 								:isDisabled="isDisabled"
+								:valueText='insertData.status[value.statusKey]["zeroToV"]'
 								@inputText="inputText" 
 								/>
-								<datalist id="zeroToV_list">
-									<option v-for="n of 32" :key="n">{{ n - 1 }}</option>
-								</datalist>
 							</td>
 							<td>{{ insertData.status[value.statusKey].tribeValue }}</td>
 							<td>
@@ -102,8 +92,14 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="sum_effort_value">努力値合計：{{ sumEffortValue }}</div>
 			<div class="register_modal_btn_area">
-				<PartsDefultButton class="register_modal_btn_register modal_btan" btnText="登録" @btn-click="register" />
+				<PartsDefultButton 
+				class="register_modal_btn_register modal_btan" 
+				btnText="登録" 
+				@btn-click="register" 
+				:style="{ opacity: btnDisabled ? 0.6 : 1 }"
+				:disabled='btnDisabled' />
 				<PartsDefultButton class="register_modal-btn_close modal_btan" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
@@ -117,6 +113,7 @@ export default {
     data() {
 		return {
 			visible: false,
+			btnDisabled: false,
 			insertData:{
 				name:"",
 				personality:{
@@ -128,38 +125,38 @@ export default {
 				status:{
 					H: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 					A: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 					B: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 					C: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 					D: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 					S: {
 						tribeValue:"0",
-						effortValue:"",
-						zeroToV:"",
+						effortValue:"0",
+						zeroToV:"31",
 						calcValue:"0"
 						},
 				},
@@ -194,8 +191,8 @@ export default {
 					let calcValue = this.calcValue
 					let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
 					Object.keys(statusObj).forEach(function(key) {
-						statusObj[key]["effortValue"] = ""
-						statusObj[key]["zeroToV"] = ""
+						statusObj[key]["effortValue"] = "0"
+						statusObj[key]["zeroToV"] = "31"
 						statusObj[key]["calcValue"] = "0"
 						statusObj[key]["tribeValue"] = monster ? monster[key] : "0"
 						calcValue(key)
@@ -212,6 +209,7 @@ export default {
 				.then((res) => {
 					this.$store.dispatch('bredMonster/fetchData')
 					alert("登録完了")
+					this.insertData.personality.name = ""
 					this.closeModal()
 				})
 		},
@@ -258,11 +256,22 @@ export default {
 		},
 		isDisabled: function() {
 			let name = this.insertData.name
+			let result = false
 			if(name == "") {
-				return true
+				result = true
 			} else {
-				return !(name in this.$store.getters['monsterInfo/getData'])
+				result = !(name in this.$store.getters['monsterInfo/getData'])
 			}
+			this.btnDisabled = result
+			return result
+		},
+		sumEffortValue: function() {
+			let stObj = this.insertData.status
+			let sum = 0
+			Object.keys(stObj).forEach(function(key){
+				sum += Number(stObj[key]["effortValue"])
+			})
+			return sum
 		}
     }
 }
@@ -290,6 +299,11 @@ export default {
 
 .annotation {
 	margin-top: 30px;
+	text-align: left;
+	font-size: small;
+}
+
+.sum_effort_value {
 	text-align: left;
 	font-size: small;
 }
