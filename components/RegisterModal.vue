@@ -13,7 +13,8 @@
 							<td>
 								<!-- 名前入力欄 -->
 								<PartsInputText 
-								:inputTextInfo='{id:"name", labelName:"名前", dataType:"name", list:"nameList"}'
+								list="nameList"
+								:inputTextInfo='{id:"name", dataType:"name"}'
 								:valueText="insertData.name"
 								@inputText="inputText" 
 								/>
@@ -37,7 +38,7 @@
 							<td>
 								<!-- 特性入力欄 -->
 								<PartsInputText 
-								:inputTextInfo='{id:"ability", labelName:"特性", dataType:"ability"}'
+								:inputTextInfo='{id:"ability", dataType:"ability"}'
 								:valueText="insertData.ability"
 								@inputText="inputText" 
 								/>
@@ -45,6 +46,7 @@
 						</tr>
 					</tbody>
 				</table>
+				<div class="annotation">※半角数字で入力</div>
 				<table>
 					<thead>
 						<tr>
@@ -60,19 +62,27 @@
 							<td>{{ value.labelName }}</td>
 							<td>
 								<!-- 努力値入力欄 -->
-								<PartsInputText 
+								<PartsInputText
+								class="input_status"
+								list="effortValue_list"
+								placeholder="0"
 								:inputTextInfo="value" 
 								:valueText="insertData.status[value.statusKey].effortValue"
 								:isDisabled="isDisabled" 
 								@inputText="inputText" />
+								<datalist id="effortValue_list">
+									<option v-for="n of 64" :key="n">{{ n * 4 -4 }}</option>
+								</datalist>
 							</td>
 							<td>
 								<!-- 個体値入力欄 -->
 								<PartsInputText
+								class="input_status"
+								list="zeroToV_list"
+								placeholder="0"
 								:inputTextInfo='{
 									tagIdid:"zeroToV_" + value.id,
 									statusKey:value.statusKey,
-									labelName: "個体値",
 									dataType: "status",
 									valueType: "zeroToV",
 								}'
@@ -80,6 +90,9 @@
 								:isDisabled="isDisabled"
 								@inputText="inputText" 
 								/>
+								<datalist id="zeroToV_list">
+									<option v-for="n of 32" :key="n">{{ n - 1 }}</option>
+								</datalist>
 							</td>
 							<td>{{ insertData.status[value.statusKey].tribeValue }}</td>
 							<td>
@@ -89,9 +102,9 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="register_btn_area">
-				<PartsDefultButton class="register_btn_close" btnText="登録" @btn-click="register" />
-				<PartsDefultButton class="register_btn_close" btnText="閉じる" @btn-click="closeModal" />
+			<div class="register_modal_btn_area">
+				<PartsDefultButton class="register_modal_btn_register modal_btan" btnText="登録" @btn-click="register" />
+				<PartsDefultButton class="register_modal-btn_close modal_btan" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
 	</div>
@@ -115,38 +128,38 @@ export default {
 				status:{
 					H: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 					A: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 					B: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 					C: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 					D: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 					S: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"0",
+						effortValue:"",
+						zeroToV:"",
 						calcValue:"0"
 						},
 				},
@@ -181,8 +194,8 @@ export default {
 					let calcValue = this.calcValue
 					let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
 					Object.keys(statusObj).forEach(function(key) {
-						statusObj[key]["effortValue"] = "0"
-						statusObj[key]["zeroToV"] = "0"
+						statusObj[key]["effortValue"] = ""
+						statusObj[key]["zeroToV"] = ""
 						statusObj[key]["calcValue"] = "0"
 						statusObj[key]["tribeValue"] = monster ? monster[key] : "0"
 						calcValue(key)
@@ -224,9 +237,6 @@ export default {
 				result = Math.floor(((tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 +5) * up * down)
 			}
 			statusObj.calcValue = String(result)
-		},
-		hello() {
-			console.log("hello")
 		}
 	},
 	computed: {
@@ -278,29 +288,46 @@ export default {
   justify-content: center;
 }
 
+.annotation {
+	margin-top: 30px;
+	text-align: left;
+	font-size: small;
+}
+
+.input_status {
+	width: 50px;
+	text-align: right;
+}
+
 .register_modal_content{
   z-index:2;
-  width:30%;
+  width:330px;
+  height: 500px;
   padding: 1em;
   background:#fff;
   border-radius: 5px;
 }
 
 /** ボタンエリアに関するデザイン */
-.register_btn_area {
+.register_modal_btn_area {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	margin-top: 40px;
 }
-/** ボタンに関するデザイン */
+
 .register_btn_show {
 	width: 100px;
 	padding: 0.8em;
 	margin: 10px 10px 0 0;
 }
 
-.register_btn_close {
+.modal_btan {
 	width: 50px;
 	padding: 0.2em;
+}
+
+.register_modal_btn_register {
+	margin-right: 40px;
 }
 
 </style>

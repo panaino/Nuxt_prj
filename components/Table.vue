@@ -20,16 +20,16 @@
       <!-- テーブルボディ -->
       <tbody>
         <tr v-for="(value, index) in getBredMonster" :key="value.ID">
-          <td>{{ index }}</td>
+          <td>{{ index + 1 }}</td>
           <td>{{ value.NAME }}</td>
           <td>{{ value.PERSONALITY }}</td>
           <td>{{ value.ABILITY }}</td>
-          <td>{{ value.calc_H }}<p class="effort_value" v-if="value.H > 0">(252)</p></td>
-          <td>{{ value.calc_A }}<p class="effort_value" v-if="value.A > 0">(252)</p></td>
-          <td>{{ value.calc_B }}<p class="effort_value" v-if="value.B > 0">(252)</p></td>
-          <td>{{ value.calc_C }}<p class="effort_value" v-if="value.C > 0">(252)</p></td>
-          <td>{{ value.calc_D }}<p class="effort_value" v-if="value.D > 0">(252)</p></td>
-          <td>{{ value.calc_S }}<p class="effort_value" v-if="value.S > 0">(252)</p></td>
+          <td valign="baseline">{{ value.calc_H }}<p class="effort_value" v-if="value.H > 0">({{ value.H }})</p></td>
+          <td valign="baseline">{{ value.calc_A }}<p class="effort_value" v-if="value.A > 0">({{ value.A }})</p></td>
+          <td valign="baseline">{{ value.calc_B }}<p class="effort_value" v-if="value.B > 0">({{ value.B }})</p></td>
+          <td valign="baseline">{{ value.calc_C }}<p class="effort_value" v-if="value.C > 0">({{ value.C }})</p></td>
+          <td valign="baseline">{{ value.calc_D }}<p class="effort_value" v-if="value.D > 0">({{ value.D }})</p></td>
+          <td valign="baseline">{{ value.calc_S }}<p class="effort_value" v-if="value.S > 0">({{ value.S }})</p></td>
         </tr>
       </tbody>
     </table>
@@ -47,6 +47,14 @@ export default {
 </script>
 
 <style>
+
+thead:after, td:after {
+	content: "";
+	height: 1px;
+	width: 100%;
+	padding: 2px 0;
+	display: block;
+}
 
 .register_list {
   width: 800px;
@@ -67,4 +75,5 @@ export default {
 .effort_value {
   font-size: xx-small;
 }
+
 </style>
