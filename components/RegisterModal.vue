@@ -5,7 +5,7 @@
 	</div>
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
-			<div>
+			<div class="input_area">
 				<table>
 					<tbody>
 						<tr>
@@ -28,7 +28,7 @@
 							<td>
 								<!-- 性格入力欄 -->
 								<select id="personality" v-model="changePersonality" :disabled="isDisabled">
-									<option value="" selected>選択してください</option>
+									<option value="" selected disabled>選択してください</option>
 									<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 								</select>
 							</td>
@@ -94,15 +94,18 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="sum_effort_value">努力値合計：{{ sumEffortValue }}</div>
+			<div class="sum_effort_value">
+				努力値合計：{{ sumEffortValue }}
+				<p v-if="sumEffortValueError" class="sum_effort_value_error"  style="color: red;">努力値の合計が510を超えています</p>
+			</div>
 			<div class="register_modal_btn_area">
 				<PartsDefultButton 
-				class="register_modal_btn_register modal_btan" 
+				class="register_modal_btn_register modal_btn" 
 				btnText="登録" 
 				@btn-click="register" 
 				:style="{ opacity: btnDisabled ? 0.6 : 1 }"
 				:disabled='btnDisabled' />
-				<PartsDefultButton class="register_modal-btn_close modal_btan" btnText="閉じる" @btn-click="closeModal" />
+				<PartsDefultButton class="register_modal-btn_close modal_btn" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
 	</div>
@@ -116,6 +119,7 @@ export default {
 		return {
 			visible: false,
 			btnDisabled: false,
+			sumEffortValueError: false,
 			insertData:{
 				name:"",
 				personality:{
@@ -273,6 +277,12 @@ export default {
 			Object.keys(stObj).forEach(function(key){
 				sum += Number(stObj[key]["effortValue"])
 			})
+			if(sum > 510) {
+				this.sumEffortValueError = true
+				this.btnDisabled = true
+			} else {
+				this.sumEffortValueError = false
+			}
 			return sum
 		}
     }
@@ -299,6 +309,10 @@ export default {
   justify-content: center;
 }
 
+/** 入力エリアに関するデザイン */
+.input_area {
+	height: 70%;
+}
 .annotation {
 	margin-top: 30px;
 	text-align: left;
@@ -306,6 +320,8 @@ export default {
 }
 
 .sum_effort_value {
+	height: 15%;
+	margin-top: 10px;
 	text-align: left;
 	font-size: small;
 }
@@ -317,8 +333,8 @@ export default {
 
 .register_modal_content{
   z-index:2;
-  width:330px;
-  height: 500px;
+  width:350px;
+  height: 550px;
   padding: 1em;
   background:#fff;
   border-radius: 5px;
@@ -328,7 +344,7 @@ export default {
 .register_modal_btn_area {
 	display: flex;
 	justify-content: center;
-	margin-top: 40px;
+	margin-top: 10px;
 }
 
 .register_btn_show {
@@ -337,7 +353,7 @@ export default {
 	margin: 10px 10px 0 0;
 }
 
-.modal_btan {
+.modal_btn {
 	width: 50px;
 	padding: 0.2em;
 }
