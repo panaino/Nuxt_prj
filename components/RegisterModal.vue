@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="register_btn_area">
-		<PartsDefultButton class="register_btn_show" btnText="登録" @btn-click="showModal" />
+		<PartsDefultButton class="register_btn_show" btnText="入力" @btn-click="showModal" />
 	</div>
 	<div class="register_modal_full" v-show="visible">
 		<div class="register_modal_content">
@@ -59,7 +59,9 @@
 					</thead>
 					<tbody>
 						<tr v-for="(value, key) in this.$store.getters['parameterInfo/getData']" :key="key">
-							<td>{{ value.labelName }}</td>
+							<td 
+							:class="{ up: insertData.personality.UP == value.statusKey, down: insertData.personality.DOWN == value.statusKey }">{{ value.labelName }}
+							</td>
 							<td>
 								<!-- 努力値入力欄 -->
 								<PartsInputText
@@ -344,4 +346,11 @@ export default {
 	margin-right: 40px;
 }
 
+/** 性格補正を視覚的にわかりやすくするためのデザイン */ 
+.up {
+	color: red;
+}
+.down{
+	color: blue;
+}
 </style>

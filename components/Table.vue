@@ -24,12 +24,30 @@
           <td>{{ value.NAME }}</td>
           <td>{{ value.PERSONALITY }}</td>
           <td>{{ value.ABILITY }}</td>
-          <td valign="baseline">{{ value.calc_H }}<p class="effort_value" v-if="value.H > 0">({{ value.H }})</p></td>
-          <td valign="baseline">{{ value.calc_A }}<p class="effort_value" v-if="value.A > 0">({{ value.A }})</p></td>
-          <td valign="baseline">{{ value.calc_B }}<p class="effort_value" v-if="value.B > 0">({{ value.B }})</p></td>
-          <td valign="baseline">{{ value.calc_C }}<p class="effort_value" v-if="value.C > 0">({{ value.C }})</p></td>
-          <td valign="baseline">{{ value.calc_D }}<p class="effort_value" v-if="value.D > 0">({{ value.D }})</p></td>
-          <td valign="baseline">{{ value.calc_S }}<p class="effort_value" v-if="value.S > 0">({{ value.S }})</p></td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'H', down: value.DOWN == 'H' }">{{ value.calc_H }}</span>
+            <p class="effort_value" v-if="value.H > 0">({{ value.H }})</p>
+          </td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'A', down: value.DOWN == 'A' }">{{ value.calc_A }}</span>
+            <p class="effort_value" v-if="value.A > 0">({{ value.A }})</p>
+          </td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'B', down: value.DOWN == 'B' }">{{ value.calc_B }}</span>
+            <p class="effort_value" v-if="value.B > 0">({{ value.B }})</p>
+          </td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'C', down: value.DOWN == 'C' }">{{ value.calc_C }}</span>
+            <p class="effort_value" v-if="value.C > 0">({{ value.C }})</p>
+          </td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'D', down: value.DOWN == 'D' }">{{ value.calc_D }}</span>
+            <p class="effort_value" v-if="value.D > 0">({{ value.D }})</p>
+          </td>
+          <td valign="baseline" class="td_status">
+            <span :class="{ up: value.UP == 'S', down: value.DOWN == 'S' }">{{ value.calc_S }}</span>
+            <p class="effort_value" v-if="value.S > 0">({{ value.S }})</p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -67,6 +85,10 @@ thead:after, td:after {
   color: #0099e4;
 }
 
+.register_list tr {
+  height: 40px;
+}
+
 .register_list th {
   padding: 0 8px;
   line-height: 40px;
@@ -74,6 +96,11 @@ thead:after, td:after {
 
 .effort_value {
   font-size: xx-small;
+}
+
+.td_status {
+  padding-top: 5px;
+  width: 80px;
 }
 
 </style>

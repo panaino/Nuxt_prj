@@ -17,7 +17,11 @@ const con = mysql.createConnection({
 
 // 育成済みポケモン全件取得
 app.get("/selectBredMonster", function (req, res) {
-    let sql = 'SELECT * FROM TB_BRED_MONSTER'
+    let sql = 
+    ' SELECT * '
+    + ' FROM TB_BRED_MONSTER as B '
+    + ' INNER JOIN TB_PERSONALITY as P '
+    + ' ON (B.PERSONALITY = P.PERSONALITY) '
     con.query(sql,
         function (err, results, fields) {
             if (err) throw err;
