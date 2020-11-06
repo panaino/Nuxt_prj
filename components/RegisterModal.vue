@@ -27,7 +27,7 @@
 							<td>性格</td>
 							<td>
 								<!-- 性格入力欄 -->
-								<select id="personality" v-model="changePersonality" :disabled="isDisabled">
+								<select id="personality" v-model="changePersonality">
 									<option value="" selected disabled>選択してください</option>
 									<option v-for="(value, key) in this.$store.getters['personalInfo/getData']" :key="key" :value="key">{{ key }}</option>
 								</select>
@@ -304,12 +304,12 @@ export default {
             }
 		},
 		isDisabled: function() {
-			let name = this.insertData.name
+			let data = this.insertData
 			let result = false
-			if(name == "") {
+			if(!data.name || !data.ability || !data.personality.name ) {
 				result = true
 			} else {
-				result = !(name in this.$store.getters['monsterInfo/getData'])
+				result = !(data.name in this.$store.getters['monsterInfo/getData'])
 			}
 			return result
 		},
