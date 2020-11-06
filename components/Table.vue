@@ -75,7 +75,7 @@ thead:after, td:after {
 }
 
 .register_list {
-  width: 800px;
+  width: 1000px;
   margin: 0 auto;
   border-collapse: collapse; 
 }

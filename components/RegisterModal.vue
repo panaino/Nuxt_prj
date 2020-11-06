@@ -46,7 +46,13 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="annotation">※半角数字で入力</div>
+				<div class="annotation">
+					※半角数字で入力
+					<span class="error_msg" v-show="hasInputError">
+						<p>※努力値の値は0~252です</p>
+						<p>※個体値の値は0〜31です</p>
+					</span>
+				</div>
 				<table>
 					<thead>
 						<tr>
@@ -68,7 +74,7 @@
 								class="input_status"
 								:inputTextInfo="value" 
 								:isDisabled="isDisabled" 
-								:valueText='insertData.status[value.statusKey]["effortValue"]'
+								:valueText='insertData.status[value.statusKey]["effortValue"].value'
 								@inputText="inputText" />
 							</td>
 							<td>
@@ -82,7 +88,7 @@
 									valueType: "zeroToV",
 								}'
 								:isDisabled="isDisabled"
-								:valueText='insertData.status[value.statusKey]["zeroToV"]'
+								:valueText='insertData.status[value.statusKey]["zeroToV"].value'
 								@inputText="inputText" 
 								/>
 							</td>
@@ -96,15 +102,15 @@
 			</div>
 			<div class="sum_effort_value">
 				努力値合計：{{ sumEffortValue }}
-				<p v-if="sumEffortValueError" class="sum_effort_value_error"  style="color: red;">努力値の合計が510を超えています</p>
+				<p v-if="sumEffortValueError" class="error_msg">努力値の合計が510を超えています</p>
 			</div>
 			<div class="register_modal_btn_area">
 				<PartsDefultButton 
 				class="register_modal_btn_register modal_btn" 
 				btnText="登録" 
 				@btn-click="register" 
-				:style="{ opacity: btnDisabled ? 0.6 : 1 }"
-				:disabled='btnDisabled' />
+				:style="{ opacity: isBtnDisabled ? 0.6 : 1 }"
+				:disabled='isBtnDisabled' />
 				<PartsDefultButton class="register_modal-btn_close modal_btn" btnText="閉じる" @btn-click="closeModal" />
 			</div>
 		</div>
@@ -118,8 +124,8 @@ export default {
     data() {
 		return {
 			visible: false,
-			btnDisabled: false,
 			sumEffortValueError: false,
+			inputError: false,
 			insertData:{
 				name:"",
 				personality:{
@@ -131,38 +137,74 @@ export default {
 				status:{
 					H: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 					A: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 					B: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 					C: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 					D: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 					S: {
 						tribeValue:"0",
-						effortValue:"0",
-						zeroToV:"31",
+						effortValue:{
+							value:"0",
+							error:false
+						},
+						zeroToV:{
+							value:"31",
+							error:false
+						},
 						calcValue:"0"
 						},
 				},
@@ -184,7 +226,8 @@ export default {
 			let key = val.statusKey
 			let dataType = val.dataType
 			if(dataType == "status"){
-				statusObj[key][val.valueType] = val.text
+				statusObj[key][val.valueType].error = val.inputError
+				statusObj[key][val.valueType].value = val.text
 				this.calcValue(key)
 			} else {
 				this.insertData[dataType] = val.text
@@ -197,8 +240,8 @@ export default {
 					let calcValue = this.calcValue
 					let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
 					Object.keys(statusObj).forEach(function(key) {
-						statusObj[key]["effortValue"] = "0"
-						statusObj[key]["zeroToV"] = "31"
+						statusObj[key]["effortValue"].value = "0"
+						statusObj[key]["zeroToV"].value = "31"
 						statusObj[key]["calcValue"] = "0"
 						statusObj[key]["tribeValue"] = monster ? monster[key] : "0"
 						calcValue(key)
@@ -223,8 +266,8 @@ export default {
 		calcValue(key) {
 			let statusObj = this.insertData["status"][key]
 			let result = 0
-			let effortValue = Number(statusObj.effortValue)
-			let zeroToV = Number(statusObj.zeroToV)
+			let effortValue = Number(statusObj.effortValue.value)
+			let zeroToV = Number(statusObj.zeroToV.value)
 			let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
 			let tribeValue = monster ? Number(monster[key]) : 0
 			let up = this.insertData.personality.UP == key ? 1.1 : 1.0
@@ -268,22 +311,44 @@ export default {
 			} else {
 				result = !(name in this.$store.getters['monsterInfo/getData'])
 			}
-			this.btnDisabled = result
 			return result
 		},
 		sumEffortValue: function() {
 			let stObj = this.insertData.status
 			let sum = 0
 			Object.keys(stObj).forEach(function(key){
-				sum += Number(stObj[key]["effortValue"])
+				sum += Number(stObj[key]["effortValue"].value)
 			})
 			if(sum > 510) {
 				this.sumEffortValueError = true
-				this.btnDisabled = true
 			} else {
 				this.sumEffortValueError = false
 			}
 			return sum
+		},
+		isBtnDisabled: function() {
+			let btnDisabled = false
+			if(this.isDisabled) {
+				btnDisabled = true
+			} else if(this.inputError) {
+				btnDisabled = true
+			} else if(this.sumEffortValueError) {
+				btnDisabled = true
+			}
+			return btnDisabled
+		},
+		hasInputError: function() {
+			let stObj = this.insertData.status
+			let hasError = false
+			let keys = Object.keys(stObj)
+			for(var i=0; i < keys.length; i++){
+				if(stObj[keys[i]]["effortValue"].error || stObj[keys[i]]["zeroToV"].error) {
+					hasError = true
+					break;
+				}
+			}
+			this.inputError = hasError
+			return hasError
 		}
     }
 }
@@ -334,7 +399,7 @@ export default {
 .register_modal_content{
   z-index:2;
   width:350px;
-  height: 550px;
+  height: 600px;
   padding: 1em;
   background:#fff;
   border-radius: 5px;
@@ -360,6 +425,11 @@ export default {
 
 .register_modal_btn_register {
 	margin-right: 40px;
+}
+
+.error_msg {
+	color: red;
+	font-size: small;
 }
 
 /** 性格補正を視覚的にわかりやすくするためのデザイン */ 

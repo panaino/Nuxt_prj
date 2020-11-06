@@ -22,6 +22,7 @@ app.get("/selectBredMonster", function (req, res) {
     + ' FROM TB_BRED_MONSTER as B '
     + ' INNER JOIN TB_PERSONALITY as P '
     + ' ON (B.PERSONALITY = P.PERSONALITY) '
+    + ' ORDER BY NAME asc '
     con.query(sql,
         function (err, results, fields) {
             if (err) throw err;
@@ -70,12 +71,12 @@ app.post("/insert", function (req, res) {
     + "' , '" + data.personality.name
     + "' , '" + data.ability
     // 努力値
-    + "' , " + status["H"]["effortValue"]
-    + "," + status["A"]["effortValue"]
-    + "," + status["B"]["effortValue"]
-    + "," + status["C"]["effortValue"]
-    + "," + status["D"]["effortValue"]
-    + "," + status["S"]["effortValue"]
+    + "' , " + status["H"]["effortValue"]["value"]
+    + "," + status["A"]["effortValue"]["value"]
+    + "," + status["B"]["effortValue"]["value"]
+    + "," + status["C"]["effortValue"]["value"]
+    + "," + status["D"]["effortValue"]["value"]
+    + "," + status["S"]["effortValue"]["value"]
     // 実数値
     + "," + status["H"]["calcValue"]
     + "," + status["A"]["calcValue"]
