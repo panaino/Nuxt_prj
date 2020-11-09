@@ -81,17 +81,15 @@ thead:after, td:after {
 }
 
 .register_list_thead th {
-  border-bottom: 2px solid #0099e4; /*#d31c4a */
-  color: #0099e4;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #0099e4;
+  color: white;
 }
 
 .register_list tr {
   height: 40px;
-}
-
-.register_list th {
-  padding: 0 8px;
-  line-height: 40px;
 }
 
 .effort_value {

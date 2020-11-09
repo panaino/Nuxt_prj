@@ -137,6 +137,7 @@ export default {
 				status:{
 					H: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -144,11 +145,11 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 					A: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -156,11 +157,11 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 					B: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -168,11 +169,11 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 					C: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -180,11 +181,11 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 					D: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -192,11 +193,11 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 					S: {
 						tribeValue:"0",
+						calcValue:"0",
 						effortValue:{
 							value:"0",
 							error:false
@@ -204,9 +205,8 @@ export default {
 						zeroToV:{
 							value:"31",
 							error:false
-						},
-						calcValue:"0"
-						},
+						}
+					},
 				},
 			}
 		}
@@ -319,11 +319,7 @@ export default {
 			Object.keys(stObj).forEach(function(key){
 				sum += Number(stObj[key]["effortValue"].value)
 			})
-			if(sum > 510) {
-				this.sumEffortValueError = true
-			} else {
-				this.sumEffortValueError = false
-			}
+			this.sumEffortValueError = sum > 510
 			return sum
 		},
 		isBtnDisabled: function() {
@@ -413,13 +409,15 @@ export default {
 }
 
 .register_btn_show {
-	width: 100px;
-	padding: 0.8em;
-	margin: 10px 10px 0 0;
+	width: 6rem;
+	height: 2.5rem;
+	margin: 5px 0px;
+
 }
 
 .modal_btn {
-	width: 50px;
+	height: 2.5rem;
+	width: 5rem;
 	padding: 0.2em;
 }
 

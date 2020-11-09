@@ -16,12 +16,8 @@ export default {
 	text-align: center;
 	text-decoration: none;
 	color: #fff;
-	background: #7c9ad1;-radius: 4px;
-}
-.btn:hover {
-	 cursor: pointer;
-	 text-decoration: none;
-	background:#6989c4;
+	background: #0099e4;
+  	font-weight: bold;	
 }
 
 </style>
