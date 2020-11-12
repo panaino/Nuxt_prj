@@ -249,16 +249,12 @@ export default {
 				}
 			} 
 		},
-		setPersonality(event) {
-			this.insertData.personality = event.target.value
-		},
 		// 登録処理
 		async register() {
 			await axios.post('http://localhost:3000/api/insert', this.insertData)
 				.then((res) => {
 					this.$store.dispatch('bredMonster/fetchData')
 					alert("登録完了")
-					this.insertData.personality.name = ""
 					this.closeModal()
 				})
 		},
