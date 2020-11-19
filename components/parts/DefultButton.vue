@@ -17,7 +17,8 @@ export default {
 	text-decoration: none;
 	color: #fff;
 	background: #0099e4;
-  	font-weight: bold;	
+	font-weight: bold;
+	outline: none;	  
 }
 
 </style>

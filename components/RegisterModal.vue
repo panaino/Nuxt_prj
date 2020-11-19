@@ -218,34 +218,23 @@ export default {
 		},
 		closeModal() {
 			this.visible = false
+			this.insertData.name = ''
+			this.initData()
 		},
 		// 子コンポーネントからの入力情報をセットする
 		inputText(val) {
 			// パラメータ入力
-			let statusObj = this.insertData.status
 			let key = val.statusKey
 			let dataType = val.dataType
 			if(dataType == "status"){
-				statusObj[key][val.valueType].error = val.inputError
-				statusObj[key][val.valueType].value = val.text
+				this.insertData.status[key][val.valueType].error = val.inputError
+				this.insertData.status[key][val.valueType].value = val.text
 				this.calcValue(key)
 			} else {
 				this.insertData[dataType] = val.text
 				// 名前に変更があった場合、入力値を初期化する
 				if(dataType == "name") {
-					this.insertData.personality.name = ""
-					this.insertData.personality.UP = ""
-					this.insertData.personality.DOWN = ""
-					this.insertData.ability = ""
-					let calcValue = this.calcValue
-					let monster = this.$store.getters['monsterInfo/getData'][this.insertData.name]
-					Object.keys(statusObj).forEach(function(key) {
-						statusObj[key]["effortValue"].value = "0"
-						statusObj[key]["zeroToV"].value = "31"
-						statusObj[key]["calcValue"] = "0"
-						statusObj[key]["tribeValue"] = monster ? monster[key] : "0"
-						calcValue(key)
-					})
+					this.initData()
 				}
 			} 
 		},
@@ -280,6 +269,23 @@ export default {
 				result = Math.floor(((tribeValue * 2 + zeroToV + effortValue / 4) * 50 / 100 +5) * up * down)
 			}
 			statusObj.calcValue = String(result)
+		},
+		// 入力データ初期化
+		initData: function() {
+			let data = this.insertData
+			data.personality.name = ""
+			data.personality.UP = ""
+			data.personality.DOWN = ""
+			data.ability = ""
+			let calcValue = this.calcValue
+			let monster = this.$store.getters['monsterInfo/getData'][data.name]
+			Object.keys(data.status).forEach(function(key) {
+				data.status[key]["effortValue"].value = "0"
+				data.status[key]["zeroToV"].value = "31"
+				data.status[key]["calcValue"] = "0"
+				data.status[key]["tribeValue"] = monster ? monster[key] : "0"
+				calcValue(key)
+			})
 		}
 	},
 	computed: {
@@ -300,6 +306,7 @@ export default {
             }
 		},
 		isDisabled: function() {
+			console.log('computed')
 			let data = this.insertData
 			let result = false
 			if(!data.name || !data.ability || !data.personality.name ) {
